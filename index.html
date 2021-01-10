@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA</title>
+</head>
+<body>
+    <div id="app">
+        <nav>
+            <!-- router-linkによるナビゲーション定義-->
+        </nav>
+        <router-link to="/top">トップ</router-link>
+        <router-link to="/users">ユーザー一覧</router-link>
+        <router-link to="/users/new">新規ユーザー作成</router-link>
+        <router-view></router-view>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1"></script>
+    
+
+    <!-- コンポーネントのテンプレート定義 -->
+    <!--トップページ-->
+    <script type="text/x-template" id="top">
+        <div>
+            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="error" v-if="error">{{error}}</div>
+            <div v-for="msg in messages" :key="msg.id">
+                <p>{{msg.userId}}</p>
+                <h2>{{msg.message}}</h2>
+            </div>
+
+            <div class="sending" v-if="sending">Sending...</div>
+            <div>
+                <div>
+                    <label>text: </label>
+                    <textarea v-model="message.message"></textarea>
+                </div>
+                <div v-if="error" class="error">
+                    {{error}}
+                </div>
+                <div>
+                    <input type="button" @click="createMessage" value="送信">
+                </div>
+            </div>
+        </div>
+    </script>
+    <!--ユーザー一覧ページ-->
+    <script type="text/x-template" id="user-list">
+        <div>
+            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="error" v-if="error">{{error}}</div>
+            <div v-for="user in users" :key="user.id">
+                <router-link :to="{name: 'user', params: {userId: user.id}}"><h2>{{user.name}}</h2></router-link>
+            </div>
+        </div>
+    </script>
+    <!--ユーザー詳細ページ-->
+    <script type="text/x-template" id="user-detail">
+        <div>
+            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="error" v-if="error">{{error}}</div>
+            <div v-if="user">
+                <h2>{{user.name}}</h2>
+                <p>{{user.description}}</p>
+            </div>
+        </div>
+    </script>
+    <!--ユーザー作成ページ-->
+    <script type="text/x-template" id="user-create">
+        <div>
+            <div class="sending" v-if="sending">Sending...</div>
+            <div>
+                <h2>新規ユーザー作成</h2>
+                <div>
+                    <label>名前: </label>
+                    <input type="text" v-model="user.name">
+                </div>
+                <div>
+                    <label>説明文: </label>
+                    <textarea v-model="user.description"></textarea>
+                </div>
+                <div v-if="error" class="error">
+                    {{error}}
+                </div>
+                <div>
+                    <input type="button" @click="createUser" value="送信">
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script src="./script/myjs.js"></script>
+
+
+    
+
+
+
+</body>
+</html>
