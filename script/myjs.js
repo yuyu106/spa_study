@@ -1,21 +1,31 @@
 var myId = 999
+var myIcon = 'green'
 
 var userData = [
     {
         id: myId,
         name: '自分',
-        description: 'わー'
+        description: 'わー',
+        icon: myIcon
     },
    {
        id: 1,
        name: 'ほわん',
-       description: '北国の小さな村で生まれ育った、白っぽいきつね族の女の子。'
+       description: '北国の小さな村で生まれ育った、白っぽいきつね族の女の子。',
+       icon: 'rabbit'
    },
    {
        id: 2,
        name: 'ヒメコ',
-       description: '縞々猫族の女の子。しましまのツインテールがチャームポイント。'
-   }
+       description: '縞々猫族の女の子。しましまのツインテールがチャームポイント。',
+       icon: 'cat'
+   },
+   {
+    id: 3,
+    name: 'ヒメコ',
+    description: '縞々猫族の女の子。しましまのツインテールがチャームポイント。',
+    icon: 'tropical'
+}
 ]
 
 var messages = [
@@ -28,6 +38,11 @@ var messages = [
         id: 2,
         userId: 2,
         message: 'こんにちは'
+    },
+    {
+        id: 3,
+        userId: 3,
+        message: 'Bonjour!'
     }
 ]
 
@@ -55,6 +70,7 @@ var postMsg = function(params, callback) {
     setTimeout(function() {
         params.id = messages.length + 1
         params.userId = myId
+        params.icon = myIcon
         messages.push(params)
         callback(null, params)
     }, 1000)
@@ -118,6 +134,11 @@ var Messages = {
                     this.$router.push('/top')
                 }
             }).bind(this))
+        },
+
+        iconColor: function(userId) {
+            var user = userData.filter(user => user.id === userId)
+            return user[0].icon
         }
     }
 }

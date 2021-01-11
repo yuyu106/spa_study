@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="app">
-        <nav>
-            <!-- router-linkによるナビゲーション定義-->
-        </nav>
-        <router-link to="/top">トップ</router-link>
-        <router-link to="/users">ユーザー一覧</router-link>
-        <router-link to="/users/new">新規ユーザー作成</router-link>
+        <header>
+            <nav>
+                <!-- router-linkによるナビゲーション定義-->
+                <router-link to="/top">Message</router-link>
+                <router-link to="/users">Friends</router-link>
+                <router-link to="/users/new">Setting</router-link>             
+            </nav>
+            <span class="race-top"></span>
+        </header> 
         <router-view></router-view>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -26,22 +32,34 @@
         <div>
             <div class="loading" v-if="loading">読み込み中...</div>
             <div class="error" v-if="error">{{error}}</div>
-            <div v-for="msg in messages" :key="msg.id">
-                <p>{{msg.userId}}</p>
-                <h2>{{msg.message}}</h2>
+            <div class="messages">
+                <div class="messages-inner">
+                    <div v-for="msg in messages" :key="msg.id" class="message">
+                        <div class="icon-wrappar">
+                            <router-link :to="{name: 'user', params: {userId: msg.id}}">
+                                <div :class='iconColor(msg.userId)' class="icon"></div>
+                            </router-link>                      
+                        </div>
+                        <p class="baloon">{{msg.message}}</p>
+                    </div>
+                </div>
             </div>
 
             <div class="sending" v-if="sending">Sending...</div>
-            <div>
-                <div>
-                    <label>text: </label>
-                    <textarea v-model="message.message"></textarea>
-                </div>
-                <div v-if="error" class="error">
-                    {{error}}
-                </div>
-                <div>
-                    <input type="button" @click="createMessage" value="送信">
+            <div class="input-message-area">
+                <span class="race"></span>
+                    <div class="input-message">
+                        <div class="input-message-inner">
+                            <div class="text">
+                                <input type="text" v-model="message.message">
+                            </div>
+                            <div v-if="error" class="error">
+                                {{error}}
+                            </div>
+                            <div　class="messsage-button">
+                                <input type="button" @click="createMessage" value="send"　class="btn btn-malformation btn-malformation--pastel">
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -85,7 +103,7 @@
                     {{error}}
                 </div>
                 <div>
-                    <input type="button" @click="createUser" value="送信">
+                    <input type="button" @click="createUser" value="send">
                 </div>
             </div>
         </div>

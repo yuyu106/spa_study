@@ -1,0 +1,227 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400&display=swap");
+body {
+  background: #CCD7EA;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #4d484a;
+  word-break: break-all; }
+
+input {
+  color: #4d484a; }
+
+.cat {
+  background: url(../image/SpokyBoo_cat_mini.png); }
+
+.rabbit {
+  background: url(../image/usa.png); }
+
+.nadja {
+  background: url(../image/nadja.jpg); }
+
+.tropical {
+  background: url(../image/tropical.jpg); }
+
+a:link,
+header {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400; }
+  a:link nav,
+  header nav {
+    background: white;
+    padding: 8px;
+    padding-top: 12px;
+    display: flex;
+    justify-content: center; }
+    a:link nav a:link, a:link nav a:visited, a:link nav a:hover, a:link nav a:active,
+    header nav a:link,
+    header nav a:visited,
+    header nav a:hover,
+    header nav a:active {
+      color: #c2a2b6;
+      text-decoration: none;
+      padding: 0 8px 0 8px; }
+      @media (min-width: 550px) {
+        a:link nav a:link, a:link nav a:visited, a:link nav a:hover, a:link nav a:active,
+        header nav a:link,
+        header nav a:visited,
+        header nav a:hover,
+        header nav a:active {
+          padding: 0 16px 0 16px; } }
+  a:link .race-top,
+  header .race-top {
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+    height: 16px;
+    background: url(../image/lace_top.png);
+    background-size: auto 16px;
+    background-position: center;
+    transform: scale(1, -1); }
+
+/* トップページ */
+.messages {
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 88px;
+  text-align: center; }
+  .messages .messages-inner {
+    display: inline-block;
+    width: 100%;
+    text-align: left; }
+    @media (min-width: 550px) {
+      .messages .messages-inner {
+        width: 50%; } }
+    .messages .messages-inner .message {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-bottom: 8px; }
+    .messages .messages-inner .icon-wrappar {
+      padding: 2px;
+      text-align: center;
+      background: linear-gradient(to right bottom, #f0d4e1, #99A8ce);
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border-radius: 8%;
+      min-width: 48px; }
+    .messages .messages-inner .icon {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      border-radius: 8%;
+      background-position: center;
+      background-size: cover; }
+    .messages .messages-inner .baloon {
+      display: inline-block;
+      position: relative;
+      padding: 8px 16px;
+      margin: 0;
+      margin-left: 32px;
+      background-color: #c2a2b6;
+      border-radius: 8px;
+      /* 大きい丸 */
+      /* 小さい丸 */ }
+      .messages .messages-inner .baloon:before {
+        content: '';
+        position: absolute;
+        display: block;
+        border-radius: 50%;
+        background-color: #c2a2b6;
+        left: -17px;
+        bottom: 5px;
+        width: 12px;
+        height: 12px; }
+      .messages .messages-inner .baloon:after {
+        content: '';
+        position: absolute;
+        display: block;
+        border-radius: 50%;
+        background-color: #c2a2b6;
+        left: -28px;
+        bottom: 0px;
+        width: 8px;
+        height: 8px; }
+
+.input-message-area {
+  line-height: 0;
+  font-size: 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%; }
+  .input-message-area .race {
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+    height: 32px;
+    background: url(../image/lace.png);
+    background-size: auto 34px;
+    background-position: center; }
+  .input-message-area .input-message {
+    background: white;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 4px 8px 8px 8px;
+    text-align: center; }
+    .input-message-area .input-message .input-message-inner {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+      @media (min-width: 550px) {
+        .input-message-area .input-message .input-message-inner {
+          width: 75%; }
+          .input-message-area .input-message .input-message-inner::before {
+            display: inline-block;
+            width: 33.33%;
+            height: 1px;
+            content: ""; } }
+    .input-message-area .input-message div {
+      line-height: 1.5rem;
+      font-size: 18px; }
+    .input-message-area .input-message .text {
+      width: 80%;
+      text-align: center;
+      display: inline-block; }
+      .input-message-area .input-message .text input {
+        width: 100%;
+        background: #f7f4e5;
+        border: 1px dashed #CCD7EA;
+        border-radius: 4px;
+        outline: 0; }
+    .input-message-area .input-message .messsage-button {
+      font-family: 'Josefin Sans', sans-serif;
+      width: 20%;
+      font-size: 16px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: right;
+      padding: 0;
+      margin: 0; }
+      .input-message-area .input-message .messsage-button input {
+        border: 0;
+        outline: none; }
+      .input-message-area .input-message .messsage-button .btn,
+      .input-message-area .input-message .messsage-button button.btn {
+        line-height: 1;
+        position: relative;
+        display: inline-block;
+        padding: 0.7rem 0.2rem;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        text-align: center;
+        vertical-align: middle;
+        text-decoration: none;
+        letter-spacing: 0.1em;
+        color: #212529;
+        border-radius: 0.5rem;
+        width: 80%;
+        max-width: 60px;
+        text-align: center; }
+      .input-message-area .input-message .messsage-button .btn-malformation {
+        color: #fff;
+        border-radius: 100% 80px / 80px 100%;
+        background-color: #eb6100; }
+      .input-message-area .input-message .messsage-button .btn-malformation:hover {
+        color: #fff;
+        border-radius: 60% 80% / 100% 80%; }
+      .input-message-area .input-message .messsage-button .btn-malformation {
+        color: #fff;
+        border-radius: 100% 20px / 20px 100%; }
+      .input-message-area .input-message .messsage-button .btn-malformation:hover {
+        color: #fff;
+        border-radius: 60% 80% / 100% 80%; }
+      .input-message-area .input-message .messsage-button .btn-malformation--pastel {
+        background: #fca1a1;
+        background: -webkit-linear-gradient(-45deg, #f0d4e1 40%, #CCD7EA 100%);
+        background: -webkit-linear-gradient(315deg, #f0d4e1 40%, #CCD7EA 100%);
+        background: linear-gradient(135deg, #f0d4e1 40%, #CCD7EA 100%); }
+
+/*# sourceMappingURL=style.css.map */
