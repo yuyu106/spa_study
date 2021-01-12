@@ -9,14 +9,14 @@
 </head>
 <body>
     <div id="app">
-        <header>
+        <header>         
             <nav>
                 <!-- router-linkによるナビゲーション定義-->
                 <router-link to="/top">Message</router-link>
                 <router-link to="/users">Friends</router-link>
                 <router-link to="/users/new">Setting</router-link>             
             </nav>
-            <span class="race-top"></span>
+            <span class="race-top"></span>          
         </header> 
         <router-view></router-view>
         
@@ -30,28 +30,32 @@
     <!--トップページ-->
     <script type="text/x-template" id="top">
         <div>
-            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
-            <div class="messages">
+            <div class="messages" id="messages">
                 <div class="messages-inner">
-                    <div v-for="msg in messages" :key="msg.id" class="message">
-                        <div class="icon-wrappar">
-                            <router-link :to="{name: 'user', params: {userId: msg.id}}">
-                                <div :class='iconColor(msg.userId)' class="icon"></div>
-                            </router-link>                      
+                    <transition-group tag="div" class="list"
+                    @before-enter="beforeEnter"
+                    @after-enter="afterEnter"
+                    @enter-cancelled="afterEnter">
+                        <div v-for="(msg, index) in messages" :key="msg.id" class="message"　:data-index="index">
+                            <div class="icon-wrappar">
+                                <router-link :to="{name: 'user', params: {userId: msg.id}}">
+                                    <div :class='iconColor(msg.userId)' class="icon"></div>
+                                </router-link>                      
+                            </div>
+                            <p class="baloon">{{msg.message}}</p>
                         </div>
-                        <p class="baloon">{{msg.message}}</p>
-                    </div>
+                    </transition-group>
                 </div>
             </div>
 
-            <div class="sending" v-if="sending">Sending...</div>
             <div class="input-message-area">
                 <span class="race"></span>
                     <div class="input-message">
                         <div class="input-message-inner">
                             <div class="text">
-                                <input type="text" v-model="message.message">
+                                <input type="text" v-model="message.message" @keydown.enter="keyEnter" @keydown.enter.shift="keyEnterShift">
                             </div>
                             <div v-if="error" class="error">
                                 {{error}}
@@ -67,7 +71,7 @@
     <!--ユーザー一覧ページ-->
     <script type="text/x-template" id="user-list">
         <div>
-            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
             <div v-for="user in users" :key="user.id">
                 <router-link :to="{name: 'user', params: {userId: user.id}}"><h2>{{user.name}}</h2></router-link>
@@ -77,7 +81,7 @@
     <!--ユーザー詳細ページ-->
     <script type="text/x-template" id="user-detail">
         <div>
-            <div class="loading" v-if="loading">読み込み中...</div>
+            <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
             <div v-if="user">
                 <h2>{{user.name}}</h2>

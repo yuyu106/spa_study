@@ -22,34 +22,93 @@ input {
 .tropical {
   background: url(../image/tropical.jpg); }
 
-a:link,
+a {
+  text-decoration: none; }
+
+/* ローディング (共通) */
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center; }
+  .loading .loader_wrappar {
+    display: inline-block;
+    height: 36px; }
+  .loading .loader,
+  .loading .loader:before,
+  .loading .loader:after {
+    border-radius: 30%;
+    width: 12px;
+    height: 12px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation: load7 1.8s infinite ease-in-out;
+    animation: load7 1.8s infinite ease-in-out; }
+  .loading .loader {
+    color: #99A8ce;
+    content: '';
+    font-size: 12px;
+    line-height: 12px;
+    position: relative;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s; }
+  .loading .loader:before,
+  .loading .loader:after {
+    content: '';
+    position: absolute;
+    top: 0; }
+  .loading .loader:before {
+    left: -24px;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s; }
+  .loading .loader:after {
+    left: 24px; }
+@-webkit-keyframes load7 {
+  0%,
+    80%,
+    100% {
+    box-shadow: 0 12px 0 -12px; }
+  40% {
+    box-shadow: 0 12px 0 0; } }
+@keyframes load7 {
+  0%,
+    80%,
+    100% {
+    box-shadow: 0 12px 0 -12px; }
+  40% {
+    box-shadow: 0 12px 0 0; } }
+/* ヘッダー (共通) */
 header {
   font-family: 'Josefin Sans', sans-serif;
   font-size: 18px;
-  font-weight: 400; }
-  a:link nav,
+  font-weight: 400;
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  z-index: 100; }
   header nav {
     background: white;
     padding: 8px;
     padding-top: 12px;
     display: flex;
     justify-content: center; }
-    a:link nav a:link, a:link nav a:visited, a:link nav a:hover, a:link nav a:active,
-    header nav a:link,
-    header nav a:visited,
-    header nav a:hover,
-    header nav a:active {
+    header nav a:link, header nav a:visited, header nav a:hover, header nav a:active {
       color: #c2a2b6;
       text-decoration: none;
       padding: 0 8px 0 8px; }
       @media (min-width: 550px) {
-        a:link nav a:link, a:link nav a:visited, a:link nav a:hover, a:link nav a:active,
-        header nav a:link,
-        header nav a:visited,
-        header nav a:hover,
-        header nav a:active {
+        header nav a:link, header nav a:visited, header nav a:hover, header nav a:active {
           padding: 0 16px 0 16px; } }
-  a:link .race-top,
   header .race-top {
     display: inline-block;
     margin: 0;
@@ -62,10 +121,13 @@ header {
 
 /* トップページ */
 .messages {
+  box-sizing: border-box;
+  margin-top: 56px;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 88px;
-  text-align: center; }
+  text-align: center;
+  position: relative; }
   .messages .messages-inner {
     display: inline-block;
     width: 100%;
@@ -76,7 +138,7 @@ header {
     .messages .messages-inner .message {
       display: flex;
       justify-content: start;
-      align-items: center;
+      align-items: flex-end;
       margin-bottom: 8px; }
     .messages .messages-inner .icon-wrappar {
       padding: 2px;
@@ -100,6 +162,7 @@ header {
       padding: 8px 16px;
       margin: 0;
       margin-left: 32px;
+      margin-bottom: 10px;
       background-color: #c2a2b6;
       border-radius: 8px;
       /* 大きい丸 */
@@ -155,7 +218,7 @@ header {
           width: 75%; }
           .input-message-area .input-message .input-message-inner::before {
             display: inline-block;
-            width: 33.33%;
+            width: 50%;
             height: 1px;
             content: ""; } }
     .input-message-area .input-message div {
@@ -223,5 +286,20 @@ header {
         background: -webkit-linear-gradient(-45deg, #f0d4e1 40%, #CCD7EA 100%);
         background: -webkit-linear-gradient(315deg, #f0d4e1 40%, #CCD7EA 100%);
         background: linear-gradient(135deg, #f0d4e1 40%, #CCD7EA 100%); }
+
+/* トランジション用スタイル */
+.v-enter-active, .v-leave-active, .v-move {
+  transition: opacity 0.8s, transform 0.5s; }
+
+.v-leave-active {
+  position: absolute; }
+
+.v-enter {
+  opacity: 0;
+  transform: translateX(-20px); }
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(20px); }
 
 /*# sourceMappingURL=style.css.map */
