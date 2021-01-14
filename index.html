@@ -29,7 +29,7 @@
     <!-- コンポーネントのテンプレート定義 -->
     <!--トップページ-->
     <script type="text/x-template" id="top">
-        <div>
+        <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
             <div class="messages" id="messages">
@@ -38,9 +38,9 @@
                     @before-enter="beforeEnter"
                     @after-enter="afterEnter"
                     @enter-cancelled="afterEnter">
-                        <div v-for="(msg, index) in messages" :key="msg.id" class="message"　:data-index="index">
+                        <div v-for="(msg, index) in messages" :key="msg.id" class="message"　:class="checkMyMessage(msg.userId)" :data-index="index">
                             <div class="icon-wrappar">
-                                <router-link :to="{name: 'user', params: {userId: msg.id}}">
+                                <router-link :to="{name: 'user', params: {userId: msg.userId}}">
                                     <div :class='iconColor(msg.userId)' class="icon"></div>
                                 </router-link>                      
                             </div>
@@ -55,7 +55,11 @@
                     <div class="input-message">
                         <div class="input-message-inner">
                             <div class="text">
-                                <input type="text" v-model="message.message" @keydown.enter="keyEnter" @keydown.enter.shift="keyEnterShift">
+                                <textarea　id="textarea" v-model="message.message" 
+                                @keydown.enter.exact="keyEnter"  
+                                @keydown.enter.shift="keyEnterShift"
+                                @compositionstart="composing=true"
+                                @compositionend="composing=false"></textarea>
                             </div>
                             <div v-if="error" class="error">
                                 {{error}}
@@ -70,7 +74,7 @@
     </script>
     <!--ユーザー一覧ページ-->
     <script type="text/x-template" id="user-list">
-        <div>
+        <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
             <div v-for="user in users" :key="user.id">
@@ -80,7 +84,7 @@
     </script>
     <!--ユーザー詳細ページ-->
     <script type="text/x-template" id="user-detail">
-        <div>
+        <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
             <div v-if="user">
@@ -91,7 +95,7 @@
     </script>
     <!--ユーザー作成ページ-->
     <script type="text/x-template" id="user-create">
-        <div>
+        <div class="main">
             <div class="sending" v-if="sending">Sending...</div>
             <div>
                 <h2>新規ユーザー作成</h2>
