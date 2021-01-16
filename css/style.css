@@ -5,8 +5,10 @@ body {
   background: #CCD7EA;
   font-family: 'M PLUS Rounded 1c', sans-serif;
   color: #4d484a;
-  word-break: break-all;
-  font-size: 16px; }
+  word-break: break-all; }
+  body #app {
+    font-size: 16px;
+    white-space: pre-line; }
 
 @supports (-webkit-touch-callout: none) {
   body {
@@ -14,6 +16,10 @@ body {
     height: -webkit-fill-available; } }
 input {
   color: #4d484a; }
+
+.my-icon {
+  background: url(../image/me.png);
+  background-size: 85% !important; }
 
 .cat {
   background: url(../image/SpokyBoo_cat_mini.png); }
@@ -28,7 +34,12 @@ input {
   background: url(../image/tropical.jpg); }
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+  color: #4d484a; }
+
+p {
+  font-size: 16px;
+  line-height: 24px; }
 
 /* ローディング (共通) */
 .loading {
@@ -97,7 +108,6 @@ header {
   font-weight: 400;
   display: inline-block;
   width: 100%;
-  height: 100px;
   position: fixed;
   top: 0;
   z-index: 100; }
@@ -124,97 +134,103 @@ header {
     background-position: center;
     transform: scale(1, -1); }
 
-.main {
-  margin-top: 56px; }
+/* アイコン */
+.icon-wrappar {
+  padding: 2px;
+  text-align: center;
+  background: linear-gradient(to right bottom, #f0d4e1, #99A8ce);
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 8%;
+  min-width: 48px; }
 
-/* トップページ */
-.messages {
+.icon {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 8%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat; }
+
+.main {
+  padding-top: 56px;
+  box-sizing: border-box;
+  position: relative; }
+
+.main-content {
   box-sizing: border-box;
   padding: 8px;
   padding-top: 16px;
   padding-bottom: 88px;
   text-align: center;
   position: relative; }
-  .messages .messages-inner {
+  .main-content .main-content-inner {
     display: inline-block;
     width: 100%;
     text-align: left; }
     @media (min-width: 550px) {
-      .messages .messages-inner {
+      .main-content .main-content-inner {
         width: 50%; } }
-    .messages .messages-inner .message {
-      display: flex;
-      justify-content: start;
-      align-items: flex-end;
-      margin-bottom: 8px; }
-    .messages .messages-inner .icon-wrappar {
-      padding: 2px;
-      text-align: center;
-      background: linear-gradient(to right bottom, #f0d4e1, #99A8ce);
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      border-radius: 8%;
-      min-width: 48px; }
-    .messages .messages-inner .icon {
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-      border-radius: 8%;
-      background-position: center;
-      background-size: cover; }
-    .messages .messages-inner .baloon {
-      display: inline-block;
-      position: relative;
-      padding: 8px 16px;
-      font-size: 16px;
-      line-height: 24px;
-      margin: 0;
-      margin-left: 32px;
-      margin-right: 32px;
-      margin-bottom: 10px;
-      background-color: #c2a2b6;
-      border-radius: 8px;
-      white-space: pre-line;
-      text-align: justify;
-      /* 大きい丸 */
-      /* 小さい丸 */ }
-      .messages .messages-inner .baloon:before {
-        content: '';
-        position: absolute;
-        display: block;
-        border-radius: 50%;
-        background-color: #c2a2b6;
-        left: -17px;
-        bottom: 5px;
-        width: 12px;
-        height: 12px; }
-      .messages .messages-inner .baloon:after {
-        content: '';
-        position: absolute;
-        display: block;
-        border-radius: 50%;
-        background-color: #c2a2b6;
-        left: -28px;
-        bottom: 0px;
-        width: 8px;
-        height: 8px; }
-    .messages .messages-inner .myMessage {
-      flex-flow: row-reverse; }
-      .messages .messages-inner .myMessage .icon-wrappar {
-        display: none; }
-      .messages .messages-inner .myMessage .baloon {
-        margin-left: 56px;
-        margin-right: 32px;
-        background-color: #99A8ce; }
-        .messages .messages-inner .myMessage .baloon:before {
-          left: initial;
-          right: -17px;
-          background-color: #99A8ce; }
-        .messages .messages-inner .myMessage .baloon:after {
-          left: initial;
-          right: -28px;
-          background-color: #99A8ce; }
+
+/* トップページ */
+.messages .messages-inner .message {
+  display: flex;
+  justify-content: start;
+  align-items: flex-end;
+  margin-bottom: 8px; }
+.messages .messages-inner .baloon {
+  display: inline-block;
+  position: relative;
+  padding: 8px 16px;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-bottom: 10px;
+  background-color: #c2a2b6;
+  border-radius: 8px;
+  text-align: justify;
+  /* 大きい丸 */
+  /* 小さい丸 */ }
+  .messages .messages-inner .baloon:before {
+    content: '';
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    background-color: #c2a2b6;
+    left: -17px;
+    bottom: 5px;
+    width: 12px;
+    height: 12px; }
+  .messages .messages-inner .baloon:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    background-color: #c2a2b6;
+    left: -28px;
+    bottom: 0px;
+    width: 8px;
+    height: 8px; }
+.messages .messages-inner .myMessage {
+  flex-flow: row-reverse; }
+  .messages .messages-inner .myMessage .icon-wrappar {
+    display: none; }
+  .messages .messages-inner .myMessage .baloon {
+    margin-left: 56px;
+    margin-right: 32px;
+    background-color: #99A8ce; }
+    .messages .messages-inner .myMessage .baloon:before {
+      left: initial;
+      right: -17px;
+      background-color: #99A8ce; }
+    .messages .messages-inner .myMessage .baloon:after {
+      left: initial;
+      right: -28px;
+      background-color: #99A8ce; }
 
 .input-message-area {
   line-height: 0;
@@ -319,6 +335,65 @@ header {
         background: -webkit-linear-gradient(-45deg, #f0d4e1 40%, #CCD7EA 100%);
         background: -webkit-linear-gradient(315deg, #f0d4e1 40%, #CCD7EA 100%);
         background: linear-gradient(135deg, #f0d4e1 40%, #CCD7EA 100%); }
+
+/* ユーザー一覧ページ */
+@media (min-width: 550px) {
+  #user-list-inner {
+    width: 480px; } }
+
+.user {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px; }
+  .user .user-name-icon {
+    display: flex;
+    justify-content: left;
+    align-items: center; }
+  .user .user-name {
+    display: inline-block;
+    margin: 0;
+    padding: 0 8px 0 8px;
+    font-size: 16px;
+    color: #4d484a; }
+
+@media (min-width: 550px) {
+  #user-list-user {
+    width: 50%; } }
+
+#user-detail-name {
+  font-size: 20px !important;
+  padding: 0 12px 0 12px !important; }
+
+.user-detail-detail {
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  background: #c2a2b6;
+  width: 100%;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 32px; }
+  .user-detail-detail:before {
+    top: -18px;
+    left: 30px;
+    background-color: #c2a2b6;
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    position: absolute; }
+  .user-detail-detail:after {
+    top: -24px;
+    left: 20px;
+    background-color: #c2a2b6;
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    position: absolute; }
 
 /* トランジション用スタイル */
 .v-enter-active, .v-leave-active, .v-move {

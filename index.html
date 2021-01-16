@@ -32,8 +32,8 @@
         <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
-            <div class="messages" id="messages">
-                <div class="messages-inner">
+            <div class="messages main-content" id="messages">
+                <div class="messages-inner main-content-inner">
                     <transition-group tag="div" class="list"
                     @before-enter="beforeEnter"
                     @after-enter="afterEnter"
@@ -77,8 +77,22 @@
         <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
-            <div v-for="user in users" :key="user.id">
-                <router-link :to="{name: 'user', params: {userId: user.id}}"><h2>{{user.name}}</h2></router-link>
+            <div class="user-list main-content">
+                <div class="main-content-inner" id="user-list-inner">
+                    <transition-group tag="div" class="list"
+                    @before-enter="beforeEnter"
+                    @after-enter="afterEnter"
+                    @enter-cancelled="afterEnter">
+                        <div v-for="(user, index) in users" :key="user.id" class="user" id="user-list-user" :data-index="index">
+                            <router-link :to="{name: 'user', params: {userId: user.id}}"　class="user-name-icon">
+                                <div class="icon-wrappar">
+                                    <div :class='iconColor(user.id)' class="icon"></div>
+                                </div>  
+                                <h2 class="user-name">{{user.name}}</h2>
+                            </router-link> 
+                        </div>
+                    </transition-group>
+                </div>
             </div>
         </div>
     </script>
@@ -87,9 +101,18 @@
         <div class="main">
             <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
             <div class="error" v-if="error">{{error}}</div>
-            <div v-if="user">
-                <h2>{{user.name}}</h2>
-                <p>{{user.description}}</p>
+            <div class="main-content">
+                <div class="main-content-inner">
+                    <div v-if="user" class="user">
+                        <div class="user-name-icon">
+                            <div class="icon-wrappar">
+                                <div :class='iconColor(user.id)' class="icon"></div>
+                            </div>
+                            <h2 class="user-name" id="user-detail-name">{{user.name}}</h2>
+                        </div>
+                        <p class="user-detail-detail">{{user.description}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </script>
