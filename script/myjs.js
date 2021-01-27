@@ -1,12 +1,14 @@
 var myId = 999
 var myIcon = 'my-icon'
+var myIconBackground = 'green'
 
 var userData = [
     {
         id: myId,
         name: '自分',
         description: 'わー',
-        icon: myIcon
+        icon: myIcon,
+        iconBackground: myIconBackground
     },
    {
        id: 1,
@@ -31,7 +33,8 @@ var userData = [
         　自分はこう云う風に一つ二つと勘定して行くうちに、赤い日をいくつ見たか分らない。勘定しても、勘定しても、しつくせないほど赤い日が頭の上を通り越して行った。それでも百年がまだ来ない。しまいには、苔の生えた丸い石を眺めて、自分は女に欺されたのではなかろうかと思い出した。
         　すると石の下から斜に自分の方へ向いて青い茎が伸びて来た。見る間に長くなってちょうど自分の胸のあたりまで来て留まった。と思うと、すらりと揺ぐ茎の頂に、心持首を傾けていた細長い一輪の蕾が、ふっくらと弁を開いた。真白な百合が鼻の先で骨に徹えるほど匂った。そこへ遥の上から、ぽたりと露が落ちたので、花は自分の重みでふらふらと動いた。自分は首を前へ出して冷たい露の滴る、白い花弁に接吻した。自分が百合から顔を離す拍子に思わず、遠い空を見たら、暁の星がたった一つ瞬いていた。
         「百年はもう来ていたんだな」とこの時始めて気がついた。`,
-       icon: 'rabbit'
+       icon: 'rabbit',
+       iconBackground: 'pink-blue'
    },
    {
        id: 2,
@@ -52,13 +55,15 @@ var userData = [
        　それでも我慢してじっと坐っていた。堪えがたいほど切ないものを胸に盛れて忍んでいた。その切ないものが身体中の筋肉を下から持上げて、毛穴から外へ吹き出よう吹き出ようと焦るけれども、どこも一面に塞がって、まるで出口がないような残刻極まる状態であった。
        　そのうちに頭が変になった。行灯も蕪村の画も、畳も、違棚も有って無いような、無くって有るように見えた。と云って無はちっとも現前しない。ただ好加減に坐っていたようである。ところへ忽然隣座敷の時計がチーンと鳴り始めた。
        　はっと思った。右の手をすぐ短刀にかけた。時計が二つ目をチーンと打った。`,
-       icon: 'cat'
+       icon: 'cat',
+       iconBackground: 'pink-blue'
    },
    {
     id: 3,
     name: 'ハッチン',
     description: 'Sting it to your heard!!',
-    icon: 'tropical'
+    icon: 'tropical',
+    iconBackground: 'pink-blue'
 }
 ]
 
@@ -113,6 +118,14 @@ var messages = [
     },
 ]
 
+var iconBackgrounds = [
+    "pink-blue",
+    "white-blue",
+    "green",
+    "blue",
+    
+]
+
 //擬似的にWebAPI経由で情報を取得したようにする
 var getMessages = function(callback) {
     setTimeout(function() {
@@ -130,6 +143,11 @@ var getUser = function(userId, callback) {
 var getUsers = function(callback) {
     setTimeout(function() {
         callback(null, userData)
+    }, 1000)
+}
+var getIconBackgrounds = function(callback) {
+    setTimeout(function() {
+        callback(null, iconBackgrounds)
     }, 1000)
 }
 //擬似的にAPI経由で情報を更新したようにする
@@ -220,6 +238,7 @@ var Messages = {
         },
 
         iconColor: function(userId) {return iconColor(userId)},
+        iconBackground: function(userId) {return iconBackground(userId)},
 
         keyEnter: function(event) {
             if (event.keyCode !== 13) return
@@ -304,6 +323,8 @@ var UserList = {
             ).bind(this))
         },
         iconColor: function(userId) {return iconColor(userId)},
+        iconBackground: function(userId) {return iconBackground(userId)},
+
          // トランジション開始でインデックス*100ms分のディレイを付与
         beforeEnter: function(el) {
             el.style.transitionDelay = 100 * parseInt(el.dataset.index, 10) + 'ms'
@@ -343,10 +364,20 @@ var UserDetail = {
             }).bind(this))
         },
         iconColor: function(userId) {return iconColor(userId)},
+        iconBackground: function(userId) {return iconBackground(userId)},
+        // トランジション開始でインデックス*100ms分のディレイを付与
+        beforeEnter: function(el) {
+            if (!this.isFirst) {el.dataset.index = 0}
+            el.style.transitionDelay = 100 * parseInt(el.dataset.index, 10) + 'ms'
+        },
+        // トランジション完了またはキャンセルでディレイを削除
+        afterEnter(el) {
+            el.style.transitionDelay = ''
+        }
     }
 }
 
-var UserCreate = {
+/* var UserCreate = {
     template: '#user-create',
     data: function() {
         return {
@@ -387,6 +418,108 @@ var UserCreate = {
             }).bind(this))
         }
     }
+} */
+
+var UserInfo = {
+    template: '#user-info',
+    data: function() {
+        return {
+            sending: false,
+            user: null,
+            error: null,
+            iconBackgrounds: function(){return []}, //初期値の空配列
+            users: function(){return []}, //初期値の空配列
+        }
+    },
+    //初期化時にデータを取得
+    created: function() {
+        this.fetchData()
+    },
+    watch: {
+        '$route': 'fetchData'
+    },
+    methods: {
+        fetchData: function() {
+            this.loading = true
+            getUser(myId, (function(err, user) {
+                this.loading = false
+                if (err) {
+                    this.error = err.toString()
+                } else {
+                    this.user = user;
+                }
+            }).bind(this))
+            getIconBackgrounds((function(err, iconBackgrounds) {
+                this.loading = false
+                if (err) {
+                    this.error = err.toString()
+                } else {
+                    this.iconBackgrounds = iconBackgrounds
+                }
+            }
+            ).bind(this))
+            getUsers((function(err, users) {
+                this.loading = false
+                if (err) {
+                    this.error = err.toString()
+                } else {
+                    //自分以外表示
+                    this.users = users;
+                }
+            }
+            ).bind(this))
+        },        
+        iconColor: function(userId) {return iconColor(userId)},
+        iconBackground: function(userId) {return iconBackground(userId)},
+        createUser: function(){
+            if(this.user.name.trim() === ''){
+                this.error = "Nameは必須です"
+                return
+            }
+            if(this.user.description.trim() === ''){
+                this.error = "Descriptionは必須です"
+                return
+            }
+            postUser(this.user, (function(err, user) {
+                this.sending = false
+                if(err) {
+                    this.error = err.toString()
+                } else {
+                    this.error = null
+                    this.user = this.defaultUser()
+                    alert('新規ユーザーが登録されました')
+                    //ユーザー一覧に戻る
+                    this.$router.push('/users')
+                }
+            }).bind(this))
+        },
+        changeIconbackground: function(color) {
+            this.user.iconBackground = color
+        },
+        changeUser: function(user) {
+            myId = user
+            this.user = null
+            this.loading = true
+            getUser(myId, (function(err, user) {
+                this.loading = false
+                if (err) {
+                    this.error = err.toString()
+                } else {
+                    this.user = user;
+                }
+            }).bind(this)) 
+        },
+        // トランジション開始でインデックス*100ms分のディレイを付与
+        beforeEnter: function(el) {
+            console.log(el.dataset.index + "data")
+            el.style.transitionDelay = 100 * parseInt(el.dataset.index, 10) + 'ms'
+        },
+        // トランジション完了またはキャンセルでディレイを削除
+        afterEnter(el) {
+            console.log("data")
+            el.style.transitionDelay = ''
+        }
+    }
 }
 
 
@@ -411,9 +544,13 @@ var router = new VueRouter({
             }
             */
         },
-        {
+        /* {
             path: '/users/new',
             component: UserCreate
+        }, */
+        {
+            path: '/user/info',
+            component: UserInfo
         },
         {
             path: '/user/:userId',  
@@ -462,5 +599,9 @@ inputElem.addEventListener('blur', function() {
 iconColor = function(userId) {
     var user = userData.filter(user => user.id === userId)
     return user[0].icon
+}
+iconBackground = function(userId) {
+    var user = userData.filter(user => user.id === userId)
+    return user[0].iconBackground
 }
 

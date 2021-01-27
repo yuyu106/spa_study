@@ -5,10 +5,8 @@ body {
   background: #CCD7EA;
   font-family: 'M PLUS Rounded 1c', sans-serif;
   color: #4d484a;
-  word-break: break-all; }
-  body #app {
-    font-size: 16px;
-    white-space: pre-line; }
+  word-break: break-all;
+  font-size: 16px; }
 
 @supports (-webkit-touch-callout: none) {
   body {
@@ -20,6 +18,18 @@ input {
 .my-icon {
   background: url(../image/me.png);
   background-size: 85% !important; }
+
+.pink-blue {
+  background: linear-gradient(to right bottom, #f0d4e1, #99A8ce); }
+
+.white-blue {
+  background: linear-gradient(to right bottom, #f7f4e5, #99A8ce); }
+
+.blue {
+  background: linear-gradient(to right bottom, #99A8ce, #4863ad); }
+
+.green {
+  background: linear-gradient(to right bottom, #f7f4e5, #adcab0); }
 
 .cat {
   background: url(../image/SpokyBoo_cat_mini.png); }
@@ -39,7 +49,8 @@ a {
 
 p {
   font-size: 16px;
-  line-height: 24px; }
+  line-height: 24px;
+  white-space: pre-line; }
 
 /* ローディング (共通) */
 .loading {
@@ -138,7 +149,6 @@ header {
 .icon-wrappar {
   padding: 2px;
   text-align: center;
-  background: linear-gradient(to right bottom, #f0d4e1, #99A8ce);
   display: inline-block;
   width: 48px;
   height: 48px;
@@ -362,7 +372,28 @@ header {
 
 #user-detail-name {
   font-size: 20px !important;
-  padding: 0 12px 0 12px !important; }
+  padding: 0 12px 0 12px !important;
+  flex: 1; }
+  #user-detail-name input {
+    border: none;
+    background-color: transparent;
+    background-image: url(../image/icon_pen.png);
+    background-repeat: no-repeat;
+    background-position: right 22px top 50%;
+    background-size: 16px;
+    line-height: 36px;
+    width: 100%;
+    position: relative;
+    border-radius: 4px;
+    padding-left: 8px; }
+    #user-detail-name input:focus {
+      background-color: white;
+      border: none;
+      outline: none; }
+
+#user-detail-icon {
+  width: 80px !important;
+  height: 80px !important; }
 
 .user-detail-detail {
   box-sizing: border-box;
@@ -394,6 +425,45 @@ header {
     width: 8px;
     height: 8px;
     position: absolute; }
+  .user-detail-detail textarea {
+    border: none;
+    resize: none;
+    background-color: transparent;
+    background-image: url(../image/icon_pen.png);
+    background-repeat: no-repeat;
+    background-position: right 8px top 6px;
+    background-size: 16px;
+    padding-top: 4px;
+    padding-right: 28px;
+    width: 100%;
+    position: relative;
+    border-radius: 4px;
+    padding-left: 8px;
+    box-sizing: border-box;
+    height: 320px; }
+    .user-detail-detail textarea:focus {
+      background-color: white;
+      border: none;
+      outline: none; }
+
+.selectIconBackground {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  margin-top: 16px; }
+  .selectIconBackground .background {
+    margin: 0 8px 8px 0; }
+
+#user-info-user {
+  display: inline-block;
+  width: initial;
+  margin: 0px 8px 8px 0; }
+
+.account {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 40px 0 12px 0; }
 
 /* トランジション用スタイル */
 .v-enter-active, .v-leave-active, .v-move {
@@ -409,5 +479,40 @@ header {
 .v-leave-to {
   opacity: 0;
   transform: translateX(20px); }
+
+#user-info-delay .user-name-icon, #user-info-delay .selectIconBackground, #user-info-delay .user-detail-detail {
+  opacity: 0;
+  animation: fadein 0.8s forwards; }
+@keyframes fadein {
+  62% {
+    transform: translateX(0px); }
+  100% {
+    transform: translateX(0px);
+    opacity: 1; } }
+#user-info-delay .user-name-icon {
+  animation-delay: 0s;
+  transform: translateX(-20px); }
+#user-info-delay .selectIconBackground {
+  animation-delay: 0.1s;
+  transform: translateX(-20px); }
+#user-info-delay .user-detail-detail {
+  animation-delay: 0.2s;
+  transform: translateX(-20px); }
+
+#user-detail-delay .user-name-icon, #user-detail-delay .user-detail-detail {
+  opacity: 0;
+  animation: fadein 0.8s forwards; }
+@keyframes fadein {
+  62% {
+    transform: translateX(0px); }
+  100% {
+    opacity: 1;
+    transform: translateX(0px); } }
+#user-detail-delay .user-name-icon {
+  animation-delay: 0s;
+  transform: translateX(-20px); }
+#user-detail-delay .user-detail-detail {
+  animation-delay: 0.1s;
+  transform: translateX(-20px); }
 
 /*# sourceMappingURL=style.css.map */

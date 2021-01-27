@@ -14,7 +14,7 @@
                 <!-- router-linkによるナビゲーション定義-->
                 <router-link to="/top">Message</router-link>
                 <router-link to="/users">Friends</router-link>
-                <router-link to="/users/new">Setting</router-link>             
+                <router-link to="/user/info">Setting</router-link>             
             </nav>
             <span class="race-top"></span>          
         </header> 
@@ -39,11 +39,11 @@
                     @after-enter="afterEnter"
                     @enter-cancelled="afterEnter">
                         <div v-for="(msg, index) in messages" :key="msg.id" class="message"　:class="checkMyMessage(msg.userId)" :data-index="index">
-                            <div class="icon-wrappar">
-                                <router-link :to="{name: 'user', params: {userId: msg.userId}}">
+                            <router-link :to="{name: 'user', params: {userId: msg.userId}}">
+                                <div :class='iconBackground(msg.userId)' class="icon-wrappar">
                                     <div :class='iconColor(msg.userId)' class="icon"></div>
-                                </router-link>                      
-                            </div>
+                                </div>
+                            </router-link>                      
                             <p class="baloon">{{msg.message}}</p>
                         </div>
                     </transition-group>
@@ -85,7 +85,7 @@
                     @enter-cancelled="afterEnter">
                         <div v-for="(user, index) in users" :key="user.id" class="user" id="user-list-user" :data-index="index">
                             <router-link :to="{name: 'user', params: {userId: user.id}}"　class="user-name-icon">
-                                <div class="icon-wrappar">
+                                <div :class='iconBackground(user.id)' class="icon-wrappar">
                                     <div :class='iconColor(user.id)' class="icon"></div>
                                 </div>  
                                 <h2 class="user-name">{{user.name}}</h2>
@@ -103,9 +103,9 @@
             <div class="error" v-if="error">{{error}}</div>
             <div class="main-content">
                 <div class="main-content-inner">
-                    <div v-if="user" class="user">
+                    <div v-if="user" class="user" id="user-detail-delay">
                         <div class="user-name-icon">
-                            <div class="icon-wrappar">
+                            <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
                                 <div :class='iconColor(user.id)' class="icon"></div>
                             </div>
                             <h2 class="user-name" id="user-detail-name">{{user.name}}</h2>
@@ -116,25 +116,56 @@
             </div>
         </div>
     </script>
-    <!--ユーザー作成ページ-->
-    <script type="text/x-template" id="user-create">
+    <!--ユーザー情報ぺージ-->
+    <script type="text/x-template" id="user-info">
         <div class="main">
-            <div class="sending" v-if="sending">Sending...</div>
-            <div>
-                <h2>新規ユーザー作成</h2>
-                <div>
-                    <label>名前: </label>
-                    <input type="text" v-model="user.name">
-                </div>
-                <div>
-                    <label>説明文: </label>
-                    <textarea v-model="user.description"></textarea>
-                </div>
-                <div v-if="error" class="error">
-                    {{error}}
-                </div>
-                <div>
-                    <input type="button" @click="createUser" value="send">
+            <div class="loading" v-if="loading"><div class="loader_wrappar"><div class="loader"></div></div></div>
+            <div class="main-content">
+                <div class="main-content-inner">
+                    <div>
+                        <!--h2>新規ユーザー作成</h2>
+                        <div>
+                            <label>名前: </label>
+                            <input type="text" v-model="user.name">
+                        </div>
+                        <div>
+                            <label>説明文: </label>
+                            <textarea v-model="user.description"></textarea>
+                        </div>
+                        <div v-if="error" class="error">
+                            {{error}}
+                        </div>
+                        <div>
+                            <input type="button" @click="createUser" value="send">
+                        </div-->
+                    
+                        <div v-if="user" class="user" id="user-info-delay">
+                            <div class="user-name-icon">
+                                <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
+                                    <div :class='iconColor(user.id)' class="icon"></div>
+                                </div>
+                                <h2 class="user-name" id="user-detail-name">
+                                    <input type="text" v-model="user.name">
+                                </h2>
+                            </div>
+                            <div class="selectIconBackground">
+                                <div v-for="(iconBackground, index) in iconBackgrounds" class="background">
+                                    <div :class='iconBackground' class="icon-wrappar" @click="changeIconbackground(iconBackground)"></div> 
+                                </div>
+                            </div>
+                            <p class="user-detail-detail">
+                                <textarea v-model="user.description"></textarea>
+                            </p>
+
+                            <p class="account"> Account </p>
+                            <div v-for="(user, index) in users" class="user" id="user-info-user">
+                                <div :class='iconBackground(user.id)' class="icon-wrappar"　　@click="changeUser(user.id)">
+                                    <div :class='iconColor(user.id)' class="icon"></div>
+                                </div> 
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
