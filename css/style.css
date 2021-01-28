@@ -480,7 +480,7 @@ header {
   opacity: 0;
   transform: translateX(20px); }
 
-#user-info-delay .user-name-icon, #user-info-delay .selectIconBackground, #user-info-delay .user-detail-detail {
+#user-info-delay .user-name-icon, #user-info-delay .selectIconBackground, #user-info-delay .user-detail-detail, #user-info-delay .account, #user-info-delay #user-info-user {
   opacity: 0;
   animation: fadein 0.8s forwards; }
 @keyframes fadein {
@@ -497,6 +497,12 @@ header {
   transform: translateX(-20px); }
 #user-info-delay .user-detail-detail {
   animation-delay: 0.2s;
+  transform: translateX(-20px); }
+#user-info-delay .account {
+  animation-delay: 0.28s;
+  transform: translateX(-20px); }
+#user-info-delay #user-info-user {
+  animation-delay: 0.3s;
   transform: translateX(-20px); }
 
 #user-detail-delay .user-name-icon, #user-detail-delay .user-detail-detail {

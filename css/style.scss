@@ -599,7 +599,7 @@ header {
   transform: translateX(20px);
 }
 #user-info-delay {
-    .user-name-icon, .selectIconBackground, .user-detail-detail  {
+    .user-name-icon, .selectIconBackground, .user-detail-detail, .account, #user-info-user   {
         opacity: 0;
         animation: fadein 0.8s forwards;
     }
@@ -610,6 +610,8 @@ header {
     .user-name-icon {animation-delay: 0s; transform: translateX(-20px);}
     .selectIconBackground {animation-delay: 0.1s; transform: translateX(-20px);}
     .user-detail-detail {animation-delay: 0.2s; transform: translateX(-20px);}
+    .account {animation-delay: 0.28s; transform: translateX(-20px);}
+    #user-info-user{animation-delay: 0.3s; transform: translateX(-20px);}
 }
 
 #user-detail-delay {
