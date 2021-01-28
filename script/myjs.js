@@ -527,6 +527,10 @@ var router = new VueRouter({
     //ルート定義を配列で渡す
     routes: [
         {
+            path: '/',
+            redirect: '/top',
+        },
+        {
             path: '/top',   //URLの指定。ファイル名#/topでアクセスできる。
             component: Messages
         },
