@@ -1,6 +1,14 @@
-var myId = 999
+Vue.config.productionTip = false
+axios.defaults.baseURL = 'http://localhost:8080/';
+Vue.prototype.$axios = axios;
+axios.defaults.withCredentials = true;
+
+
+var myId = 1
 var myIcon = 'my-icon'
 var myIconBackground = 'green'
+
+var requestApinum = 0;
 
 var userData = [
     {
@@ -13,7 +21,6 @@ var userData = [
    {
        id: 1,
        name: 'ほわん',
- //      description: '北国の小さな村で生まれ育った、白っぽいきつね族の女の子。',
         description: `　こんな夢を見た。
         　腕組をして枕元に坐っていると、仰向に寝た女が、静かな声でもう死にますと云う。女は長い髪を枕に敷いて、輪郭の柔らかな瓜実顔をその中に横たえている。真白な頬の底に温かい血の色がほどよく差して、唇の色は無論赤い。とうてい死にそうには見えない。しかし女は静かな声で、もう死にますと判然云った。自分も確にこれは死ぬなと思った。そこで、そうかね、もう死ぬのかね、と上から覗き込むようにして聞いて見た。死にますとも、と云いながら、女はぱっちりと眼を開あけた。大きな潤のある眼で、長い睫に包まれた中は、ただ一面に真黒であった。その真黒な眸の奥に、自分の姿が鮮に浮かんでいる。
         　自分は透き徹るほど深く見えるこの黒眼の色沢を眺めて、これでも死ぬのかと思った。それで、ねんごろに枕の傍へ口を付けて、死ぬんじゃなかろうね、大丈夫だろうね、とまた聞き返した。すると女は黒い眼を眠そうにみはったまま、やっぱり静かな声で、でも、死ぬんですもの、仕方がないわと云った。
@@ -132,18 +139,27 @@ var getMessages = function(callback) {
         callback(null, messages)
     }, 1000)
 }
-var getUser = function(userId, callback) {
+var getUser = function(axios, userId, callback) {
     setTimeout(function() {
-        var filteredUsers = userData.filter(function (user) {
-            return user.id === parseInt(userId, 10)
-        })
-        callback(null, filteredUsers && filteredUsers[0])
+        axios.get('/user/' + userId)
+             .then(response => {
+                callback(null, response.data[0]);
+             })
+             .catch(error => {
+                callback(error, null)
+             }) 
     }, 1000)
 }
-var getUsers = function(callback) {
+var getUsers = function(axios, callback) {
     setTimeout(function() {
-        callback(null, userData)
-    }, 1000)
+        axios.get('/users')
+             .then(response => {
+                callback(null, response.data);
+             })
+             .catch(error => {
+                callback(error, null)
+             }) 
+    }, 1000) 
 }
 var getIconBackgrounds = function(callback) {
     setTimeout(function() {
@@ -299,7 +315,7 @@ var UserList = {
         return {
             loading: false,
             users: function(){return []}, //初期値の空配列
-            error: null
+            error: null,
         }
     },
     //初期化時にデータを取得
@@ -312,18 +328,36 @@ var UserList = {
     methods: {
         fetchData: function() {
             this.loading = true
-            getUsers((function(err, users) {
+            getUsers(this.$axios, (function(err, res) {
                 this.loading = false
                 if (err) {
                     this.error = err.toString()
                 } else {
-                    this.users = users.filter(user => user.id !== myId);
+                    /* responseのデータを一度resUsersにセットしてからフィルターをかける */
+                    var resUsers = [];
+                    res.forEach(element => {
+                        resUsers.push({
+                            id: element.id,
+                            name: element.name,
+                            description: element.description,
+                            icon: element.icon,
+                            iconBackground: element.iconBackground
+                        });
+                    })
+                    /* 自分は表示しない */
+                    this.users = resUsers.filter(user => user.id !== myId);
                 }
             }
             ).bind(this))
         },
-        iconColor: function(userId) {return iconColor(userId)},
-        iconBackground: function(userId) {return iconBackground(userId)},
+        iconColor: function(userId) {
+            var user = this.users.filter(user => user.id === userId)
+            return user[0].icon
+        },
+        iconBackground: function(userId) {
+            var user = this.users.filter(user => user.id === userId)
+            return user[0].iconBackground
+        },
 
          // トランジション開始でインデックス*100ms分のディレイを付与
         beforeEnter: function(el) {
@@ -332,7 +366,7 @@ var UserList = {
         // トランジション完了またはキャンセルでディレイを削除
         afterEnter(el) {
             el.style.transitionDelay = ''
-        }
+        },
     }
 }
 
@@ -342,7 +376,8 @@ var UserDetail = {
         return {
             loading: false,
             user: null,
-            error: null
+            error: null,
+            result: null,
         }
     },
     created: function() {
@@ -354,17 +389,18 @@ var UserDetail = {
     methods: {
         fetchData: function() {
             this.loading = true
-            getUser(this.$route.params.userId, (function(err, user) {
+            getUser(this.$axios, this.$route.params.userId, (function(err, user) {
                 this.loading = false
                 if (err) {
                     this.error = err.toString()
                 } else {
                     this.user = user;
+                    console.log(this.user);
                 }
             }).bind(this))
         },
-        iconColor: function(userId) {return iconColor(userId)},
-        iconBackground: function(userId) {return iconBackground(userId)},
+        iconColor: function(userId) {return this.user.icon},
+        iconBackground: function(userId) {return this.user.iconBackground},
         // トランジション開始でインデックス*100ms分のディレイを付与
         beforeEnter: function(el) {
             if (!this.isFirst) {el.dataset.index = 0}
@@ -373,52 +409,36 @@ var UserDetail = {
         // トランジション完了またはキャンセルでディレイを削除
         afterEnter(el) {
             el.style.transitionDelay = ''
-        }
-    }
-}
-
-/* var UserCreate = {
-    template: '#user-create',
-    data: function() {
-        return {
-            sending: false,
-            user: this.defaultUser(),
-            error: null
-        }
-    },
-    created: function() {
-    },
-    methods: {
-        defaultUser: function() {
-            return {
-                name: '',
-                description: ''
-            }
         },
-        createUser: function(){
-            if(this.user.name.trim() === ''){
-                this.error = "Nameは必須です"
-                return
-            }
-            if(this.user.description.trim() === ''){
-                this.error = "Descriptionは必須です"
-                return
-            }
-            postUser(this.user, (function(err, user) {
-                this.sending = false
-                if(err) {
-                    this.error = err.toString()
-                } else {
-                    this.error = null
-                    this.user = this.defaultUser()
-                    alert('新規ユーザーが登録されました')
-                    //ユーザー一覧に戻る
-                    this.$router.push('/users')
-                }
-            }).bind(this))
+
+        /* APIのリクエスト お試し */
+        requestApi() {
+            console.log("いってらっしゃい");
+            requestApinum++;
+            this.$axios
+            .get('/user/' + this.$route.params.userId)
+            .then(response => {
+                console.log("おかえり");
+                this.result = response.data;
+
+                /* response.data.forEach(element => {
+                    
+                    this.users.push({
+                        id: element.id * Math.pow(100, requestApinum),
+                        name: element.name,
+                        description: element.description,
+                        icon: element.icon,
+                        iconBackground: element.iconBackground
+                    }); 
+                    
+                })   */
+            })
+            .catch(error => {
+                this.result = error;
+            })    
         }
-    }
-} */
+    },
+}
 
 var UserInfo = {
     template: '#user-info',
@@ -441,12 +461,13 @@ var UserInfo = {
     methods: {
         fetchData: function() {
             this.loading = true
-            getUser(myId, (function(err, user) {
+            getUser(this.$axios, myId, (function(err, user) {
                 this.loading = false
                 if (err) {
                     this.error = err.toString()
                 } else {
                     this.user = user;
+                    console.log(this.user);
                 }
             }).bind(this))
             getIconBackgrounds((function(err, iconBackgrounds) {
@@ -458,40 +479,42 @@ var UserInfo = {
                 }
             }
             ).bind(this))
-            getUsers((function(err, users) {
+            getUsers(this.$axios, (function(err, res) {
                 this.loading = false
                 if (err) {
                     this.error = err.toString()
                 } else {
-                    //自分以外表示
-                    this.users = users;
+                    var resUsers = [];
+                    res.forEach(element => {
+                        resUsers.push({
+                            id: element.id,
+                            name: element.name,
+                            description: element.description,
+                            icon: element.icon,
+                            iconBackground: element.iconBackground
+                        });
+                    })
+                    /* 自分は表示しない */
+                    this.users = resUsers;
+                    console.log(resUsers);
+                    console.log(this.users);
                 }
             }
             ).bind(this))
         },        
-        iconColor: function(userId) {return iconColor(userId)},
-        iconBackground: function(userId) {return iconBackground(userId)},
-        createUser: function(){
-            if(this.user.name.trim() === ''){
-                this.error = "Nameは必須です"
-                return
+        iconColor: function(userId) {
+            if(this.users[0]) {
+                var selectUser = this.users.filter(user => user.id === userId)
+                return selectUser[0].icon
             }
-            if(this.user.description.trim() === ''){
-                this.error = "Descriptionは必須です"
-                return
+            return null; 
+        },
+        iconBackground: function(userId) {
+            if(this.users[0]) {
+                var selectUser = this.users.filter(user => user.id === userId)
+                return selectUser[0].iconBackground
             }
-            postUser(this.user, (function(err, user) {
-                this.sending = false
-                if(err) {
-                    this.error = err.toString()
-                } else {
-                    this.error = null
-                    this.user = this.defaultUser()
-                    alert('新規ユーザーが登録されました')
-                    //ユーザー一覧に戻る
-                    this.$router.push('/users')
-                }
-            }).bind(this))
+            return null; 
         },
         changeIconbackground: function(color) {
             this.user.iconBackground = color
@@ -500,14 +523,15 @@ var UserInfo = {
             myId = user
             this.user = null
             this.loading = true
-            getUser(myId, (function(err, user) {
+            getUser(this.$axios, myId, (function(err, user) {
                 this.loading = false
                 if (err) {
                     this.error = err.toString()
                 } else {
                     this.user = user;
+                    console.log(this.user);
                 }
-            }).bind(this)) 
+            }).bind(this))
         },
         // トランジション開始でインデックス*100ms分のディレイを付与
         beforeEnter: function(el) {

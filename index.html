@@ -33,7 +33,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router@3.0.1"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- コンポーネントのテンプレート定義 -->
     <!--トップページ-->
@@ -120,6 +120,9 @@
                             <h2 class="user-name" id="user-detail-name">{{user.name}}</h2>
                         </div>
                         <p class="user-detail-detail">{{user.description}}</p>
+
+                        <button @click="requestApi">API取得</button>
+                        <p>{{result}}</p>
                     </div>
                 </div>
             </div>
@@ -132,23 +135,7 @@
             <div class="main-content">
                 <div class="main-content-inner">
                     <div>
-                        <!--h2>新規ユーザー作成</h2>
-                        <div>
-                            <label>名前: </label>
-                            <input type="text" v-model="user.name">
-                        </div>
-                        <div>
-                            <label>説明文: </label>
-                            <textarea v-model="user.description"></textarea>
-                        </div>
-                        <div v-if="error" class="error">
-                            {{error}}
-                        </div>
-                        <div>
-                            <input type="button" @click="createUser" value="send">
-                        </div-->
-                    
-                        <div v-if="user" class="user" id="user-info-delay">
+                        <div v-if="user && users" class="user" id="user-info-delay">
                             <div class="user-name-icon">
                                 <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
                                     <div :class='iconColor(user.id)' class="icon"></div>
