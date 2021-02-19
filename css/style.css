@@ -178,6 +178,8 @@ header {
   position: relative; }
   .main-content .main-content-inner {
     display: inline-block;
+    position: relative;
+    height: 584px;
     width: 100%;
     text-align: left; }
     @media (min-width: 550px) {
@@ -466,6 +468,11 @@ header {
   font-weight: 400;
   margin: 40px 0 12px 0; }
 
+.user-info-users {
+  position: absolute;
+  left: 0;
+  top: 569px; }
+
 /* トランジション用スタイル */
 .v-enter-active, .v-leave-active, .v-move {
   transition: opacity 0.8s, transform 0.5s; }
@@ -481,7 +488,7 @@ header {
   opacity: 0;
   transform: translateX(20px); }
 
-#user-info-delay .user-name-icon, #user-info-delay .selectIconBackground, #user-info-delay .user-detail-detail, #user-info-delay .account, #user-info-delay #user-info-user {
+.user-info-delay .user-name-icon, .user-info-delay .selectIconBackground, .user-info-delay .user-detail-detail, .user-info-delay .account, .user-info-delay #user-info-user {
   opacity: 0;
   animation: fadein 0.8s forwards; }
 @keyframes fadein {
@@ -490,19 +497,19 @@ header {
   100% {
     transform: translateX(0px);
     opacity: 1; } }
-#user-info-delay .user-name-icon {
+.user-info-delay .user-name-icon {
   animation-delay: 0s;
   transform: translateX(-20px); }
-#user-info-delay .selectIconBackground {
+.user-info-delay .selectIconBackground {
   animation-delay: 0.1s;
   transform: translateX(-20px); }
-#user-info-delay .user-detail-detail {
+.user-info-delay .user-detail-detail {
   animation-delay: 0.2s;
   transform: translateX(-20px); }
-#user-info-delay .account {
+.user-info-delay .account {
   animation-delay: 0.28s;
   transform: translateX(-20px); }
-#user-info-delay #user-info-user {
+.user-info-delay #user-info-user {
   animation-delay: 0.3s;
   transform: translateX(-20px); }
 

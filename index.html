@@ -120,9 +120,6 @@
                             <h2 class="user-name" id="user-detail-name">{{user.name}}</h2>
                         </div>
                         <p class="user-detail-detail">{{user.description}}</p>
-
-                        <button @click="requestApi">API取得</button>
-                        <p>{{result}}</p>
                     </div>
                 </div>
             </div>
@@ -135,7 +132,7 @@
             <div class="main-content">
                 <div class="main-content-inner">
                     <div>
-                        <div v-if="user && users" class="user" id="user-info-delay">
+                        <div v-if="user && users" class="user user-info-delay">
                             <div class="user-name-icon">
                                 <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
                                     <div :class='iconColor(user.id)' class="icon"></div>
@@ -150,16 +147,16 @@
                                 </div>
                             </div>
                             <p class="user-detail-detail">
-                                <textarea v-model="user.description"></textarea>
+                                <textarea　@blur="setDescription" v-model="user.description"></textarea>
                             </p>
-
+                        </div>
+                        <div v-if="users" class="user-info-users user-info-delay">
                             <p class="account"> Account </p>
                             <div v-for="(user, index) in users" class="user" id="user-info-user">
                                 <div :class='iconBackground(user.id)' class="icon-wrappar"　　@click="changeUser(user.id)">
                                     <div :class='iconColor(user.id)' class="icon"></div>
                                 </div> 
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ $sp : "max-width: 549px";
 $main-font-size: 16px;
 $main-line-height: 24px;
 
+
 body {
     background: $background;
     font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -232,6 +233,8 @@ header {
     position: relative;
     .main-content-inner {
         display: inline-block;
+        position: relative;
+        height: 584px;
         width: 100%;
         text-align: left;
         @media (#{$pc}) {
@@ -584,6 +587,12 @@ header {
     margin: 40px 0 12px 0;
 }
 
+.user-info-users {
+    position: absolute;
+    left: 0;
+    top: 569px;
+}
+
 /* トランジション用スタイル */
 .v-enter-active, .v-leave-active, .v-move {
   transition: opacity 0.8s, transform 0.5s;
@@ -599,7 +608,7 @@ header {
   opacity: 0;
   transform: translateX(20px);
 }
-#user-info-delay {
+.user-info-delay {
     .user-name-icon, .selectIconBackground, .user-detail-detail, .account, #user-info-user   {
         opacity: 0;
         animation: fadein 0.8s forwards;

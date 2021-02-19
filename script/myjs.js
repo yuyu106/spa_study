@@ -3,12 +3,18 @@ axios.defaults.baseURL = 'http://localhost:8080/';
 Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
 
+axios.interceptors.request.use(request => {
+    console.log('Starting Request: ', request)
+    return request
+  })
 
 var myId = 1
 var myIcon = 'my-icon'
 var myIconBackground = 'green'
 
 var requestApinum = 0;
+var num=0;
+var sec=1000;   
 
 var userData = [
     {
@@ -448,7 +454,7 @@ var UserInfo = {
             user: null,
             error: null,
             iconBackgrounds: function(){return []}, //初期値の空配列
-            users: function(){return []}, //初期値の空配列
+            users: null, //初期値の空配列
         }
     },
     //初期化時にデータを取得
@@ -517,7 +523,55 @@ var UserInfo = {
             return null; 
         },
         changeIconbackground: function(color) {
-            this.user.iconBackground = color
+            var selectUser = this.users.filter(user => user.id === myId)
+            selectUser[0].iconBackground = color
+            this.user.iconBackground = color;
+
+            const axiosApi = axios.create({
+                headers: {
+                    /* JSON形式にすると何故か失敗するのでtext形式で送る */
+                    'Content-Type':'text/plain;charset=utf-8'
+                }
+            }) 
+
+            axiosApi.post('/changeBackground', 
+                /* {
+                        id: this.user.id,
+                        name: this.user.name,
+                        description: this.user.description,
+                        icon: this.user.icon,
+                        iconBackground: this.user.iconBackground
+                    
+                } , */
+
+                this.user
+                
+            )
+        },
+        setDescription: function() {
+            var selectUser = this.users.filter(user => user.id === myId)
+            selectUser[0].description = this.user.description;
+
+            const axiosApi = axios.create({
+                headers: {
+                    /* JSON形式にすると何故か失敗するのでtext形式で送る */
+                    'Content-Type':'text/plain;charset=utf-8'
+                }
+            }) 
+
+            axiosApi.post('/changeDescription', 
+                /* {
+                        id: this.user.id,
+                        name: this.user.name,
+                        description: this.user.description,
+                        icon: this.user.icon,
+                        iconBackground: this.user.iconBackground
+                    
+                } , */
+
+                this.user
+                
+            )
         },
         changeUser: function(user) {
             myId = user
