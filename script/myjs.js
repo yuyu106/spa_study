@@ -10,14 +10,6 @@ axios.interceptors.request.use(request => {
 
 var myId = 1
 
-var iconBackgrounds = [
-    "pink-blue",
-    "white-blue",
-    "green",
-    "blue",
-    
-]
-
 //WebAPI経由で情報を取得したようにする
 var getMessages = function(axios, callback) {
     axios.get('/messages')
@@ -50,19 +42,17 @@ var getUsers = function(axios, callback) {
              }) 
     }, 1000) 
 }
-
-/*
-
-未実装
-
-*/
-var getIconBackgrounds = function(callback) {
-    setTimeout(function() {
-        callback(null, iconBackgrounds)
-    }, 1000)
+var getIconBackgrounds = function(axios, callback) {
+    axios.get('/iconBackgrounds')
+         .then(response => {
+            callback(null, response.data);
+         })
+         .catch(error => {
+            console.log(error)
+         }) 
 }
 //API経由で情報を更新したようにする
-var postMsg = function(params, callback) {
+var postMsg = function(to, params, callback) {
     const axiosApi = axios.create({
         headers: {
             /* JSON形式にすると何故か失敗するのでtext形式で送る */
@@ -70,7 +60,7 @@ var postMsg = function(params, callback) {
         }
     }) 
 
-    axiosApi.post("/addMessage", params)
+    axiosApi.post(to, params)
             .then(response => {
                 callback(null, response.data[0]);
             })
@@ -162,7 +152,7 @@ var Messages = {
             if(this.message.message.trim() === ''){
                 return
             }
-            postMsg(this.message, (function(err, resMsg) {
+            postMsg("/addMessage", this.message, (function(err, resMsg) {
                 this.sending = false
                 if(err) {
                     this.error = err.toString()
@@ -177,6 +167,20 @@ var Messages = {
                 }
             }).bind(this)) 
         },
+        deleteMessage: function(id){
+            var selectMessage = this.messages.filter(msg => msg.id === id)
+            var index = this.messages.indexOf(selectMessage[0])
+
+            postMsg("/deleteMessage", this.messages[index], (function(err, resMsg) {
+                if(err) {
+                    this.error = err.toString()
+                } else {
+                    this.error = null 
+                    this.messages.splice(index, 1); 
+                }
+            }).bind(this)) 
+
+        },
 
         iconColor: function(userId) {
             if(this.users[0]) {
@@ -188,7 +192,8 @@ var Messages = {
         iconBackground: function(userId) {
             if(this.users[0]) {
                 var selectUser = this.users.filter(user => user.id === userId)
-                return selectUser[0].iconBackground
+                var selectColor = iconBackgrounds.filter(color => color.id === selectUser[0].iconBackground)
+                return selectColor[0].color
             }
             return null; 
         },
@@ -292,8 +297,9 @@ var UserList = {
             return user[0].icon
         },
         iconBackground: function(userId) {
-            var user = this.users.filter(user => user.id === userId)
-            return user[0].iconBackground
+            var selectUser = this.users.filter(user => user.id === userId)
+            var selectColor = iconBackgrounds.filter(color => color.id === selectUser[0].iconBackground)
+            return selectColor[0].color
         },
 
          // トランジション開始でインデックス*100ms分のディレイを付与
@@ -337,7 +343,10 @@ var UserDetail = {
             }).bind(this))
         },
         iconColor: function(userId) {return this.user.icon},
-        iconBackground: function(userId) {return this.user.iconBackground},
+        iconBackground: function(userId) {
+            var selectColor = iconBackgrounds.filter(color => color.id === this.user.iconBackground)
+            return selectColor[0].color
+        },
         // トランジション開始でインデックス*100ms分のディレイを付与
         beforeEnter: function(el) {
             if (!this.isFirst) {el.dataset.index = 0}
@@ -357,7 +366,7 @@ var UserInfo = {
             sending: false,
             user: null,
             error: null,
-            iconBackgrounds: function(){return []}, //初期値の空配列
+            iconBackgrounds: iconBackgrounds, //初期値の空配列
             users: null, //初期値の空配列
         }
     },
@@ -377,29 +386,8 @@ var UserInfo = {
                     this.error = err.toString()
                 } else {
                     this.user = user;
-                    console.log(this.user);
                 }
             }).bind(this))
-            /*
-
-
-
-            未実装
-
-
-
-
-
-            */
-            getIconBackgrounds((function(err, iconBackgrounds) {
-                this.loading = false
-                if (err) {
-                    this.error = err.toString()
-                } else {
-                    this.iconBackgrounds = iconBackgrounds
-                }
-            }
-            ).bind(this))
             getUsers(this.$axios, (function(err, res) {
                 this.loading = false
                 if (err) {
@@ -433,7 +421,10 @@ var UserInfo = {
         iconBackground: function(userId) {
             if(this.users[0]) {
                 var selectUser = this.users.filter(user => user.id === userId)
-                return selectUser[0].iconBackground
+                var selectColor = iconBackgrounds.filter(color => color.id === selectUser[0].iconBackground)
+                console.log(selectUser)
+                console.log(selectColor)
+                return selectColor[0].color
             }
             return null; 
         },
@@ -537,7 +528,40 @@ var router = new VueRouter({
     ] 
 })
 
+var iconBackgrounds = []
+var iconBackgroundsClass = []
+
 var app = new Vue({
     el: '#app',
-    router: router
+    router: router,
+    data: {
+        /*  */
+        function() {
+            return {
+                abc: {
+                    //インラインスタイルでの適用
+                    //background: "linear-gradient(to right bottom, $silkyPink, $mistyBlue)"
+                    backgroundColor: "blue"
+                }
+            }
+        },
+    },
+    created: function() {
+        console.log("Hello Vue");
+        getIconBackgrounds(this.$axios, function(err, res) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.forEach(element => {
+                    iconBackgrounds.push({
+                        id: element.id,
+                        name: element.name,
+                        color: {background: element.color},
+                    });
+                })
+            }
+        })
+        
+
+    },
 })

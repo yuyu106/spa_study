@@ -49,11 +49,12 @@
                     @enter-cancelled="afterEnter">
                         <div v-for="(msg, index) in messages" :key="msg.id" class="message"　:class="checkMyMessage(msg.userId)" :data-index="index">
                             <router-link :to="{name: 'user', params: {userId: msg.userId}}">
-                                <div :class='iconBackground(msg.userId)' class="icon-wrappar">
+                                <div :style='iconBackground(msg.userId)' class="icon-wrappar">
                                     <div :class='iconColor(msg.userId)' class="icon"></div>
                                 </div>
                             </router-link>                      
                             <p class="baloon">{{msg.message}}</p>
+                            <div class="delete-message" v-if="msg.id > 5" @click="deleteMessage(msg.id)"><p></p></div>
                         </div>
                     </transition-group>
                 </div>
@@ -94,7 +95,7 @@
                     @enter-cancelled="afterEnter">
                         <div v-for="(user, index) in users" :key="user.id" class="user" id="user-list-user" :data-index="index">
                             <router-link :to="{name: 'user', params: {userId: user.id}}"　class="user-name-icon">
-                                <div :class='iconBackground(user.id)' class="icon-wrappar">
+                                <div :style='iconBackground(user.id)' class="icon-wrappar">
                                     <div :class='iconColor(user.id)' class="icon"></div>
                                 </div>  
                                 <h2 class="user-name">{{user.name}}</h2>
@@ -114,7 +115,7 @@
                 <div class="main-content-inner">
                     <div v-if="user" class="user" id="user-detail-delay">
                         <div class="user-name-icon">
-                            <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
+                            <div :style='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
                                 <div :class='iconColor(user.id)' class="icon"></div>
                             </div>
                             <h2 class="user-name" id="user-detail-name">{{user.name}}</h2>
@@ -134,7 +135,7 @@
                     <div>
                         <div v-if="user && users" class="user user-info-delay">
                             <div class="user-name-icon">
-                                <div :class='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
+                                <div :style='iconBackground(user.id)' class="icon-wrappar" id="user-detail-icon">
                                     <div :class='iconColor(user.id)' class="icon"></div>
                                 </div>
                                 <h2 class="user-name" id="user-detail-name">
@@ -143,7 +144,7 @@
                             </div>
                             <div class="selectIconBackground">
                                 <div v-for="(iconBackground, index) in iconBackgrounds" class="background">
-                                    <div :class='iconBackground' class="icon-wrappar" @click="changeIconbackground(iconBackground)"></div> 
+                                    <div :style='iconBackground.color' class="icon-wrappar" @click="changeIconbackground(iconBackground.id)"></div> 
                                 </div>
                             </div>
                             <p class="user-detail-detail">
@@ -153,7 +154,7 @@
                         <div v-if="users" class="user-info-users user-info-delay">
                             <p class="account"> Account </p>
                             <div v-for="(user, index) in users" class="user" id="user-info-user">
-                                <div :class='iconBackground(user.id)' class="icon-wrappar"　　@click="changeUser(user.id)">
+                                <div :style='iconBackground(user.id)' class="icon-wrappar"　　@click="changeUser(user.id)">
                                     <div :class='iconColor(user.id)' class="icon"></div>
                                 </div> 
                             </div>
