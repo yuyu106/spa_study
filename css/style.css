@@ -187,7 +187,6 @@ header {
 /* トップページ */
 .messages .messages-inner .message {
   display: flex;
-  justify-content: start;
   align-items: flex-end;
   margin-bottom: 8px; }
 .messages .messages-inner .baloon {
